@@ -26,13 +26,25 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/" target="_self">
-                    <span class="icon"><i class="fas fa-home"></i></span>Home
+                    <span class="icon"><i class="fas fa-home"></i></span> Home
                 </a>
             </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile" target="_self">
+                        <span class="icon"><i class="fas fa-user-circle"></i></span> Profile
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/known_words" target="_self">
+                        <span class="icon"><i class="fas fa-user-circle"></i></span> Known Words
+                    </a>
+                </li>
+            {% endif %}
         </ul>
     </div>
     <div class="mx-auto order-0">
-        <a class="navbar-brand mx-auto" href="#">DuoVocab</a>
+        <a class="navbar-brand mx-auto" href="/">DuoVocab</a>
         <button class="navbar-toggler second-button" type="button" data-toggle="collapse" data-target=".dual-collapse">
             <div class="animated-icon"><span></span><span></span><span></span><span></span></div>
         </button>
@@ -40,14 +52,17 @@
     <div class="navbar-collapse collapse w-100 order-3 dual-collapse">
         <ul class="navbar-nav ml-auto">
             {% if user.is_authenticated %}
-                <a class="navbar-item has-tooltip-bottom" href="/logout" data-tooltip="Log out">
-                    <i class="fas fa-sign-out-alt fa-lg"></i>
-                </a>
-                <a class="nav-link" href="#">Welcome, {{ user.username }}</a>
+                <li class="nav-item">
+                    <a class="nav-link has-tooltip-bottom" href="/logout" data-tooltip="Log out">
+                        <i class="fas fa-sign-out-alt fa-lg"></i>
+                    </a>
+                </li>
             {% else %}
-                <a class="navbar-item has-tooltip-bottom" href="/login" data-tooltip="Log in">
-                    <i class="fas fa-sign-in-alt fa-lg"></i>
-                </a>
+                <li class="nav-item">
+                    <a class="nav-link has-tooltip-bottom" href="/login" data-tooltip="Log in">
+                        <i class="fas fa-sign-in-alt fa-lg"></i>
+                    </a>
+                </li>
             {% endif %}
         </ul>
     </div>
@@ -56,16 +71,16 @@
 {% block page_content %}{% endblock %}
 
 
-<footer class="bg-dark text-center text-white">
-    <div class="container p-4 pb-0">
-        <section class="mb-4">
-            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-linkedin-in"></i></a>
-            <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-github"></i></a>
-        </section>
-    </div>
-
-    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-        <p><i class="far fa-copyright"></i> 2021 - <strong>DuoVocab</strong></p>
+<footer class="bg-dark text-center text-white fixed-bottom">
+    <div class="text-center p-2 " style="background-color: rgba(0, 0, 0, 0.05);">
+        <p><i class="far fa-copyright"></i> 2021 - <strong>DuoVocab</strong>
+            <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/mustafaulker"
+               target="_blank" role="button"><i class="fab fa-linkedin-in"></i>
+            </a>
+            <a class="btn btn-outline-light btn-floating m-1" href="https://linkedin.com/in/mustafaulker"
+               target="_blank" role="button"><i class="fab fa-github"></i>
+            </a>
+        </p>
     </div>
 </footer>
 </body>
