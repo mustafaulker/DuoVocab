@@ -5,6 +5,7 @@ from .forms import User
 
 class DuoData(models.Model):
     user_id = models.IntegerField()
-    duo_username = models.CharField(max_length=50)
-    duo_password = models.CharField(max_length=50)
-    duo_known_words = models.JSONField()
+    username = models.CharField(max_length=50)
+    password = models.CharField(max_length=50)
+    known_words = models.JSONField()
+    languages = models.JSONField()

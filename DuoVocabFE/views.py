@@ -18,15 +18,26 @@ def profile(request):
         password = request.POST['password']
         if not DuoData.objects.filter(user_id=request.user.id).exists():
             duo_user = duolingo.Duolingo(username, password)
-            DuoData.objects.get_or_create(user_id=request.user.id, duo_username=username, duo_password=password,
-                                          duo_known_words=duo_user.get_known_words('de'))
+            languages = {}
+            user_lang = duo_user.get_languages(abbreviations=True)
+            for lang in user_lang:
+                languages[lang] = duo_user.get_known_words(lang)
+            DuoData.objects.get_or_create(user_id=request.user.id,
+                                          username=username,
+                                          password=password,
+                                          known_words=languages,
+                                          languages=duo_user.get_languages(abbreviations=True))
 
     return render(request, "profile.html", {'duo_user': DuoData.objects.filter(user_id=request.user.id).first()})
 
 
 def known_words(request):
+    lang_selection = None
+    if request.method == "POST":
+        lang_selection = request.POST['button']
     return render(request, "known_words.html",
-                  {'duo_user': DuoData.objects.filter(user_id=request.user.id).first()})
+                  {'duo_user': DuoData.objects.filter(user_id=request.user.id).first(),
+                   'lang_selection': lang_selection})
 
 
 def register_request(request):
