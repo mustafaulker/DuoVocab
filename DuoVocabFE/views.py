@@ -22,9 +22,15 @@ def profile(request):
             user_lang = duo_user.get_languages(abbreviations=True)
             for lang in user_lang:
                 languages[lang] = duo_user.get_known_words(lang)
+            user_info = duo_user.get_user_info()
             DuoData.objects.get_or_create(user_id=request.user.id,
                                           username=username,
                                           password=password,
+                                          duo_id=user_info['id'],
+                                          fullname=user_info['fullname'],
+                                          bio=user_info['bio'],
+                                          location=user_info['location'],
+                                          account_created=user_info['created'].strip('\n'),
                                           known_words=languages,
                                           languages=duo_user.get_languages(abbreviations=True))
 

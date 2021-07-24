@@ -1,9 +1,47 @@
 {% extends "base.html" %}
+{% block head %}
+    <link rel="stylesheet" href="../static/css/profile.css">
+{% endblock %}
 
 {% block page_content %}
 
     {% if duo_user != None %}
-        Welcome {{ duo_user.username }}
+        <div class="container bootdey flex-grow-1 container-p-y">
+            <div class="media align-items-center py-3 mb-3">
+                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt=""
+                     class="d-block ui-w-100 rounded-circle">
+                <div class="media-body ml-4">
+                    <h4 class="font-weight-bold mb-0">{{ duo_user.fullname }} <span
+                            class="text-muted font-weight-normal">@{{ duo_user.username }}</span></h4>
+                    <div class="text-muted mb-2">ID: {{ duo_user.duo_id }}</div>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <table class="table user-view-table m-0">
+                        <tbody>
+                        <tr>
+                            <td>Bio:</td>
+                            <td>{{ duo_user.bio }}</td>
+                        </tr>
+                        <tr>
+                            <td>Languages:</td>
+                            <td>{{ duo_user.languages }}</td>
+                        </tr>
+                        <tr>
+                            <td>Account Created:</td>
+                            <td>{{ duo_user.account_created }}</td>
+                        </tr>
+                        <tr>
+                            <td>Location:</td>
+                            <td>{{ duo_user.location }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr class="border-light m-0">
+            </div>
+        </div>
     {% else %}
         <div class="container py-5 center w-25">
             <h5>Login to your Duolingo account</h5>

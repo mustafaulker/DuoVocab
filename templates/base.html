@@ -52,13 +52,13 @@
         <ul class="navbar-nav ms-auto">
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link has-tooltip-bottom" href="/logout" data-tooltip="Log out">
+                    <a class="nav-link has-tooltip-left" href="/logout" data-tooltip="Log out">
                         <i class="fas fa-sign-out-alt fa-lg"></i>
                     </a>
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link has-tooltip-bottom" href="/login" data-tooltip="Log in">
+                    <a class="nav-link has-tooltip-left" href="/login" data-tooltip="Log in">
                         <i class="fas fa-sign-in-alt fa-lg"></i>
                     </a>
                 </li>
@@ -72,7 +72,8 @@
 
 <footer class="bg-dark text-center text-white fixed-bottom">
     <div class="text-center p-2 " style="background-color: rgba(0, 0, 0, 0.05);">
-        <p><i class="far fa-copyright"></i> 2021 - <strong>DuoVocab</strong>
+        <p>
+            <i class="far fa-copyright"></i> 2021 - <strong>DuoVocab</strong>
             <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/mustafaulker"
                target="_blank" role="button"><i class="fab fa-github"></i>
             </a>
