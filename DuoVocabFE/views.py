@@ -31,6 +31,7 @@ def profile(request):
                                           bio=user_info['bio'],
                                           location=user_info['location'],
                                           account_created=user_info['created'].strip('\n'),
+                                          avatar=str(user_info['avatar']) + '/xxlarge',
                                           known_words=languages,
                                           languages=duo_user.get_languages(abbreviations=True))
 

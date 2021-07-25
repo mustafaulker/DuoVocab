@@ -1,3 +1,4 @@
 Django
 djongo
 duolingo-api
+crispy-bootstrap5
