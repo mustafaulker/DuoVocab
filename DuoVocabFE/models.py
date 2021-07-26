@@ -15,3 +15,4 @@ class DuoData(models.Model):
     avatar = models.CharField(max_length=100)
     known_words = models.JSONField()
     languages = models.JSONField()
+    lang_abrv = models.JSONField()

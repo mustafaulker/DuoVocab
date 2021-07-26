@@ -18,10 +18,9 @@ def profile(request):
         password = request.POST['password']
         if not DuoData.objects.filter(user_id=request.user.id).exists():
             duo_user = duolingo.Duolingo(username, password)
-            languages = {}
-            user_lang = duo_user.get_languages(abbreviations=True)
-            for lang in user_lang:
-                languages[lang] = duo_user.get_known_words(lang)
+            words_by_language = {}
+            for lang_abrv in duo_user.get_languages(abbreviations=True):
+                words_by_language[lang_abrv] = duo_user.get_known_words(lang_abrv)
             user_info = duo_user.get_user_info()
             DuoData.objects.get_or_create(user_id=request.user.id,
                                           username=username,
@@ -32,8 +31,9 @@ def profile(request):
                                           location=user_info['location'],
                                           account_created=user_info['created'].strip('\n'),
                                           avatar=str(user_info['avatar']) + '/xxlarge',
-                                          known_words=languages,
-                                          languages=duo_user.get_languages(abbreviations=True))
+                                          known_words=words_by_language,
+                                          languages=duo_user.get_languages(),
+                                          lang_abrv=duo_user.get_languages(abbreviations=True))
 
     return render(request, "profile.html", {'duo_user': DuoData.objects.filter(user_id=request.user.id).first()})
 
@@ -41,7 +41,9 @@ def profile(request):
 def known_words(request):
     lang_selection = None
     if request.method == "POST":
-        lang_selection = request.POST['button']
+        duo_user = duolingo.Duolingo(DuoData.objects.get(user_id=request.user.id).username,
+                                     DuoData.objects.get(user_id=request.user.id).password)
+        lang_selection = duo_user.get_abbreviation_of(request.POST['button'])
     return render(request, "known_words.html",
                   {'duo_user': DuoData.objects.filter(user_id=request.user.id).first(),
                    'lang_selection': lang_selection})
