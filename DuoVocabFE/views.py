@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 
 from .forms import NewUserForm
-from .models import DuoData
+from .models import DuoData, LangAbrv
 
 
 def homepage(request):
@@ -41,9 +41,7 @@ def profile(request):
 def known_words(request):
     lang_selection = None
     if request.method == "POST":
-        duo_user = duolingo.Duolingo(DuoData.objects.get(user_id=request.user.id).username,
-                                     DuoData.objects.get(user_id=request.user.id).password)
-        lang_selection = duo_user.get_abbreviation_of(request.POST['button'])
+        lang_selection = LangAbrv.objects.get(name=request.POST['button']).abrv
     return render(request, "known_words.html",
                   {'duo_user': DuoData.objects.filter(user_id=request.user.id).first(),
                    'lang_selection': lang_selection})
