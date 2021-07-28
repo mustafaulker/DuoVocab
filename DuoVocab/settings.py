@@ -60,6 +60,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'DuoVocab',
+        'CLIENT': {
+            'host': 'mongo',
+            'port': 27017,
+        },
     }
 }
 

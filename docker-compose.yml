@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  duovocab:
+    build: .
+    container_name: duovocab
+    image: duovocab-image
+    command: bash -c "python manage.py migrate && python manage.py makemigrations && python manage.py runserver 0.0.0.0:8000"
+    links:
+      - mongo
+    ports:
+      - 8000:8000
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:latest
+    container_name: duovocab-mongodb
+    restart: unless-stopped
+
+  mongo-seed:
+    image: mongo:latest
+    container_name: duovocab-seed
+    depends_on:
+      - duovocab
+    volumes:
+      - ./seed/DuoVocabFE_langabrv.json:/seed/DuoVocabFE_langabrv.json
+    command: mongoimport --host mongo -d DuoVocab -c DuoVocabFE_langabrv --type json --file /seed/DuoVocabFE_langabrv.json --jsonArray --upsertFields abrv
+    restart: on-failure
