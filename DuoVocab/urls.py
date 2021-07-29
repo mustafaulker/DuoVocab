@@ -13,4 +13,5 @@ urlpatterns = [
     path("logout/", views.logout_request, name="logout"),
     path("profile/", views.profile, name="profile"),
     path("known_words/", views.known_words, name="known_words"),
+    path("flashcard/", views.flashcard, name="flashcard"),
 ]

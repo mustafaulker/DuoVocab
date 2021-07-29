@@ -47,6 +47,15 @@ def known_words(request):
                    'lang_selection': lang_selection})
 
 
+def flashcard(request):
+    card_side = "Front"
+    if request.method == "POST":
+        card_side = request.POST['flashcard_button']
+    return render(request, "flashcard.html",
+                  {'duo_user': DuoData.objects.filter(user_id=request.user.id).first(),
+                   'card_side': card_side})
+
+
 def register_request(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)

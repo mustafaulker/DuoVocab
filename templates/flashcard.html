@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {% load custom_tags %}
+        {% if card_side == "Front" %}
+            <div style="margin-top: 10%">
+                <div class="d-flex justify-content-center align-items-center">
+                    <h1 class="display-4">Word</h1>
+                </div>
+                <div class="d-flex justify-content-center align-items-center" style="margin-top: 10%">
+                    <button class="btn btn-outline-dark btn-lg" type="submit"
+                            name="flashcard_button" value="Back">Flip Card
+                    </button>
+                </div>
+            </div>
+        {% elif card_side == "Back" %}
+            <div style="margin-top: 10%">
+                <div class="d-flex justify-content-center align-items-center">
+                    <h1 class="display-4">Translation</h1>
+                </div>
+                <div class="d-flex justify-content-center align-items-center" style="margin-top: 10%">
+                    <button class="btn btn-outline-dark btn-lg" type="submit"
+                            name="flashcard_button" value="Front">Flip Card
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+    </form>
+{% endblock %}
