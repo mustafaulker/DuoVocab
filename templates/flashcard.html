@@ -7,7 +7,7 @@
         {% if card_side == "Front" %}
             <div style="margin-top: 10%">
                 <div class="d-flex justify-content-center align-items-center">
-                    <h1 class="display-4">Word</h1>
+                    <h1 class="display-4">{{ duo_user.known_words|select_language:lang_selection|random }}</h1>
                 </div>
                 <div class="d-flex justify-content-center align-items-center" style="margin-top: 10%">
                     <button class="btn btn-outline-dark btn-lg" type="submit"
@@ -22,7 +22,7 @@
                 </div>
                 <div class="d-flex justify-content-center align-items-center" style="margin-top: 10%">
                     <button class="btn btn-outline-dark btn-lg" type="submit"
-                            name="flashcard_button" value="Front">Flip Card
+                            name="flashcard_button" value="Front">Next Card
                     </button>
                 </div>
             </div>

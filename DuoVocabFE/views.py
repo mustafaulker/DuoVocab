@@ -40,8 +40,11 @@ def profile(request):
 
 def known_words(request):
     lang_selection = None
-    if request.method == "POST":
-        lang_selection = LangAbrv.objects.get(name=request.POST['button']).abrv
+    if 'lang_selection_btn' in request.POST:
+        lang_selection = LangAbrv.objects.get(name=request.POST['lang_selection_btn']).abrv
+        request.session['lang_selection'] = lang_selection
+    elif 'random_study_btn' in request.POST:
+        return redirect('flashcard')
     return render(request, "known_words.html",
                   {'duo_user': DuoData.objects.filter(user_id=request.user.id).first(),
                    'lang_selection': lang_selection})
@@ -53,7 +56,7 @@ def flashcard(request):
         card_side = request.POST['flashcard_button']
     return render(request, "flashcard.html",
                   {'duo_user': DuoData.objects.filter(user_id=request.user.id).first(),
-                   'card_side': card_side})
+                   'card_side': card_side, 'lang_selection': request.session['lang_selection']})
 
 
 def register_request(request):

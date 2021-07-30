@@ -3,79 +3,84 @@
 {% block head %}<title>Known Words | DuoVocab</title>{% endblock %}
 
 {% block page_content %}
-
-    {% load custom_tags %}
-    {% if duo_user != None %}
-        {% if lang_selection == None %}
-            <form action="" method="POST">
-                {% csrf_token %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {% load custom_tags %}
+        {% if duo_user != None %}
+            {% if lang_selection == None %}
                 <div style="margin-top: 10%">
                     <div class="d-flex justify-content-center align-items-center">
                         <h1 class="display-4">Please select your language</h1>
                     </div>
                     <div class="d-flex justify-content-center align-items-center" style="margin-top: 3%">
                         {% for language in duo_user.languages %}
-                            <button class="btn btn-outline-dark btn-lg" type="submit" name="button"
+                            <button class="btn btn-outline-dark btn-lg" type="submit" name="lang_selection_btn"
                                     value="{{ language }}" style="margin-left:1%;">{{ language }}</button>
                         {% endfor %}
                     </div>
                 </div>
-            </form>
-        {% else %}
-            <div class="d-flex justify-content-center align-items-center" style="margin-top: 3%">
-                <div class="card">
-                    <header class="card-header">
-                        <p class="text-center h5">
-                            {{ duo_user.known_words|select_language:lang_selection|length }} Words
-                        </p>
-                    </header>
-                    <hr>
-                    <div class="card-table">
-                        <div class="content">
-                            <div id="table" style="height: 500px; width:800px; overflow: auto; margin: auto;">
-                                {% if duo_user.known_words|length < 1 %}
-                                    <h1 class="title is-4" style="text-align: center">There are no Words yet.</h1>
-                                {% else %}
-                                    <table class="table is-fullwidth is-striped is-hoverable"
-                                           style="text-align: center">
-                                        <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th style="text-align: left">
-                                                <span class="icon"><i class="fas fa-i-cursor"></i></span> Words
-                                            </th>
-                                            <th><span class="icon"><i class="fas fa-cogs"></i></span> Actions</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for word in duo_user.known_words|select_language:lang_selection %}
+            {% else %}
+                <div class="d-flex justify-content-center align-items-center" style="margin-top: 2%">
+                    <button class="btn btn-outline-dark btn-lg" type="submit" name="random_study_btn"
+                            value="{{ lang_selection }}">Random Study
+                    </button>
+                </div>
+                <div class="d-flex justify-content-center align-items-center" style="margin-top: 2%">
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="text-center h5">
+                                {{ duo_user.known_words|select_language:lang_selection|length }} Words
+                            </p>
+                        </header>
+                        <hr>
+                        <div class="card-table">
+                            <div class="content">
+                                <div id="table" style="height: 500px; width:800px; overflow: auto; margin: auto;">
+                                    {% if duo_user.known_words|length < 1 %}
+                                        <h1 class="title is-4" style="text-align: center">There are no Words yet.</h1>
+                                    {% else %}
+                                        <table class="table is-fullwidth is-striped is-hoverable"
+                                               style="text-align: center">
+                                            <thead>
                                             <tr>
-                                                <td style="width: 5%">{{ forloop.counter }}</td>
-                                                <td style="text-align: left">{{ word }}</td>
-                                                <td>
-                                                    <form action="/remove_keyword" method="POST">
-                                                        <button class="button is-small is-danger has-tooltip-bottom"
-                                                                name="remove_key" value="{{ word }}"
-                                                                data-tooltip="Remove">
-                                                            <span class="icon"><i class="fas fa-trash"></i></span>
-                                                        </button>
-                                                    </form>
-                                                </td>
+                                                <th>#</th>
+                                                <th style="text-align: left">
+                                                    <span class="icon"><i class="fas fa-i-cursor"></i></span> Words
+                                                </th>
+                                                <th><span class="icon"><i class="fas fa-cogs"></i></span> Actions</th>
                                             </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                {% endif %}
+                                            </thead>
+                                            <tbody>
+                                            {% for word in duo_user.known_words|select_language:lang_selection %}
+                                                <tr>
+                                                    <td style="width: 5%">{{ forloop.counter }}</td>
+                                                    <td style="text-align: left">{{ word }}</td>
+                                                    <td>
+                                                        <form action="/remove_keyword" method="POST">
+                                                            <button class="button is-small is-danger has-tooltip-bottom"
+                                                                    name="remove_key" value="{{ word }}"
+                                                                    data-tooltip="Remove">
+                                                                <span class="icon"><i class="fas fa-trash"></i></span>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            {% endif %}
+        {% else %}
+            <div class="d-flex justify-content-center align-items-center" style="margin-top: 10%">
+                <h1 class="display-6">Please Login to your <b>Duolingo</b> account on <a href="/profile">Profile</a>
+                    page.
+                </h1>
             </div>
         {% endif %}
-    {% else %}
-        <div class="d-flex justify-content-center align-items-center" style="margin-top: 10%">
-            <h1 class="display-6">Please Login to your <b>Duolingo</b> account on <a href="/profile">Profile</a> page.
-            </h1>
-        </div>
-    {% endif %}
+    </form>
 {% endblock %}
