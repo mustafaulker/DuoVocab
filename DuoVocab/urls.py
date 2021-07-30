@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 
-import DuoVocabFE.views as views
+from DuoVocabFE import views
 
 app_name = "DuoVocabFE"
 
