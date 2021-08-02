@@ -14,6 +14,7 @@ class DuoData(models.Model):
     account_created = models.CharField(max_length=50)
     avatar = models.CharField(max_length=100)
     known_words = models.JSONField()
+    translations = models.JSONField()
     languages = models.JSONField()
     lang_abrv = models.JSONField()
 

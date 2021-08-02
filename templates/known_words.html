@@ -29,7 +29,7 @@
                     <div class="card">
                         <header class="card-header">
                             <p class="text-center h5">
-                                {{ duo_user.known_words|select_language:lang_selection|length }} Words
+                                {{ duo_user.known_words|get_words:lang_selection|length }} Words
                             </p>
                         </header>
                         <hr>
@@ -51,7 +51,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {% for word in duo_user.known_words|select_language:lang_selection %}
+                                            {% for word in duo_user.known_words|get_words:lang_selection %}
                                                 <tr>
                                                     <td style="width: 5%">{{ forloop.counter }}</td>
                                                     <td style="text-align: left">{{ word }}</td>

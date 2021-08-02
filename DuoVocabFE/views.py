@@ -18,9 +18,12 @@ def profile(request):
         password = request.POST['password']
         if not DuoData.objects.filter(user_id=request.user.id).exists():
             duo_user = duolingo.Duolingo(username, password)
-            words_by_language = {}
+            words_by_language, translations = {}, {}
             for lang_abrv in duo_user.get_languages(abbreviations=True):
                 words_by_language[lang_abrv] = duo_user.get_known_words(lang_abrv)
+            for source in words_by_language:
+                translations[source] = duo_user.get_translations(target='en', source=source,
+                                                                 words=words_by_language[source])
             user_info = duo_user.get_user_info()
             DuoData.objects.get_or_create(user_id=request.user.id,
                                           username=username,
@@ -32,6 +35,7 @@ def profile(request):
                                           account_created=user_info['created'].strip('\n'),
                                           avatar=str(user_info['avatar']) + '/xxlarge',
                                           known_words=words_by_language,
+                                          translations=translations,
                                           languages=duo_user.get_languages(),
                                           lang_abrv=duo_user.get_languages(abbreviations=True))
 
@@ -51,12 +55,17 @@ def known_words(request):
 
 
 def flashcard(request):
-    card_side = "Front"
-    if request.method == "POST":
-        card_side = request.POST['flashcard_button']
+    card_side = "front"
+    word = None
+    if 'front' in request.POST:
+        card_side = 'back'
+        word = request.POST['front']
+    elif 'back' in request.POST:
+        card_side = 'front'
     return render(request, "flashcard.html",
                   {'duo_user': DuoData.objects.filter(user_id=request.user.id).first(),
-                   'card_side': card_side, 'lang_selection': request.session['lang_selection']})
+                   'card_side': card_side, 'lang_selection': request.session['lang_selection'],
+                   'translate_params': [request.session['lang_selection'], word]})
 
 
 def register_request(request):

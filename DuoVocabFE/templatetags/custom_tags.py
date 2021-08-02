@@ -4,5 +4,10 @@ register = template.Library()
 
 
 @register.filter
-def select_language(h, key):
-    return h.get(key, '-')
+def get_words(dictio, lang):
+    return dictio.get(lang, '-')
+
+
+@register.filter
+def get_translation(dictio, args):
+    return dictio.get(args[0], '-').get(args[1])
