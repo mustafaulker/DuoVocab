@@ -5,31 +5,30 @@
         {% csrf_token %}
         {% load custom_tags %}
         {% if card_side == "front" %}
-            <div style="margin-top: 10%">
-                {% with word=duo_user.known_words|get_words:lang_selection|random %}
-                    <div class="d-flex justify-content-center align-items-center">
-                        <h1 class="display-4">{{ word }}</h1>
-                    </div>
-                    <div class="d-flex justify-content-center align-items-center" style="margin-top: 10%">
-                        <button class="btn btn-outline-dark btn-lg" type="submit"
-                                name="front" value="{{ word }}">Flip Card
-                        </button>
-                    </div>
-                {% endwith %}
-            </div>
+            {% with word=duo_user.known_words|get_words:lang_selection|random %}
+                <div class="d-flex justify-content-center align-items-center" style="margin-top: 10%">
+                    <h1 class="display-4">{{ word }}</h1>
+                </div>
+                <div class="d-flex justify-content-center align-items-center" style="margin-top: 10%">
+                    <button class="btn btn-outline-dark btn-lg" type="submit"
+                            name="front" value="{{ word }}">Flip Card
+                    </button>
+                </div>
+            {% endwith %}
         {% elif card_side == "back" %}
-            <div style="margin-top: 10%">
-                {% with translation=duo_user.translations|get_translation:translate_params %}
-                    <div class="d-flex justify-content-center align-items-center">
-                        <h1 class="display-4">{{ translation|join:", " }}</h1>
-                    </div>
-                    <div class="d-flex justify-content-center align-items-center" style="margin-top: 10%">
-                        <button class="btn btn-outline-dark btn-lg" type="submit"
-                                name="back" value="front">Next Card
-                        </button>
-                    </div>
-                {% endwith %}
-            </div>
+            {% with translation=duo_user.translations|get_translation:translate_params %}
+                <div class="d-flex justify-content-center align-items-center" style="margin-top: 5%">
+                    <i class="display-6">{{ translate_params.1 }}</i>
+                </div>
+                <div class="d-flex justify-content-center align-items-center" style="margin-top: 5%">
+                    <h1 class="display-4">{{ translation|join:", "|truncatewords:8 }}</h1>
+                </div>
+                <div class="d-flex justify-content-center align-items-center" style="margin-top: 7.5%">
+                    <button class="btn btn-outline-dark btn-lg" type="submit"
+                            name="back" value="front">Next Card
+                    </button>
+                </div>
+            {% endwith %}
         {% endif %}
     </form>
 {% endblock %}
