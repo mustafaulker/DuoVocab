@@ -1,6 +1,7 @@
 import duolingo
 from django.contrib import messages
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 
@@ -12,6 +13,7 @@ def homepage(request):
     return render(request, "home.html", {})
 
 
+@login_required
 def profile(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -42,6 +44,7 @@ def profile(request):
     return render(request, "profile.html", {'duo_user': DuoData.objects.filter(user_id=request.user.id).first()})
 
 
+@login_required
 def known_words(request):
     lang_selection = None
     if 'lang_selection_btn' in request.POST:
@@ -54,6 +57,7 @@ def known_words(request):
                    'lang_selection': lang_selection})
 
 
+@login_required
 def flashcard(request):
     card_side = "front"
     word = None
@@ -98,9 +102,3 @@ def login_request(request):
             messages.error(request, "Invalid username or password.")
     form = AuthenticationForm()
     return render(request, "auth/login.html", {"login_form": form})
-
-
-def logout_request(request):
-    logout(request)
-    messages.info(request, "You have successfully logged out.")
-    return redirect("homepage")

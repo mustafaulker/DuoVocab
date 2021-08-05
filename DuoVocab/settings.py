@@ -1,9 +1,11 @@
 import os
 from pathlib import Path
 
+from decouple import config
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-y*f^=repj+8jtw$)vgvm#@a*8tie2uo^8f9a1-p&ds!u5=oeh+'
+SECRET_KEY = config("SECRET_KEY")
 
 DEBUG = True
 
@@ -98,3 +100,7 @@ STATICFILES_DIRS = (
 )
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'homepage'
+LOGOUT_REDIRECT_URL = 'homepage'

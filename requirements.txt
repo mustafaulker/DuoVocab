@@ -2,3 +2,4 @@ Django
 djongo
 duolingo-api
 crispy-bootstrap5
+python-decouple
