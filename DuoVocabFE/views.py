@@ -59,6 +59,8 @@ def known_words(request):
 
 @login_required
 def flashcard(request):
+    if not request.session.get('lang_selection'):
+        request.session['lang_selection'] = DuoData.objects.get(user_id=request.user.id).lang_abrv[0]
     card_side = "front"
     word = None
     if 'front' in request.POST:
