@@ -21,7 +21,7 @@
 
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse" id="dual-collapse">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/" target="_self">
@@ -44,11 +44,12 @@
     </div>
     <div class="mx-auto order-0">
         <a class="navbar-brand mx-auto" href="/">DuoVocab</a>
-        <button class="navbar-toggler second-button" type="button" data-toggle="collapse" data-target=".dual-collapse">
+        <button class="navbar-toggler second-button" type="button" data-bs-toggle="collapse"
+                data-bs-target="#dual-collapse" aria-controls="dual-collapse" aria-expanded="false">
             <div class="animated-icon"><span></span><span></span><span></span><span></span></div>
         </button>
     </div>
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse">
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse" id="dual-collapse">
         <ul class="navbar-nav ms-auto">
             {% if user.is_authenticated %}
                 <li class="nav-item">
@@ -90,7 +91,6 @@
     $(document).ready(function () {
         $('.second-button').on('click', function () {
             $('.animated-icon').toggleClass('open');
-            console.log("dsadass")
         });
     });
 </script>
