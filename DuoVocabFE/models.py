@@ -17,9 +17,3 @@ class DuoData(models.Model):
     translations = models.JSONField()
     languages = models.JSONField()
     lang_abrv = models.JSONField()
-
-
-class LangAbrv(models.Model):
-    abrv = models.CharField(max_length=10)
-    name = models.CharField(max_length=50)
-    nativeName = models.CharField(max_length=50)

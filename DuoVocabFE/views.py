@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 
 from .forms import NewUserForm
-from .models import DuoData, LangAbrv
+from .models import DuoData
 
 
 def homepage(request):
@@ -20,9 +20,12 @@ def profile(request):
         password = request.POST['password']
         if not DuoData.objects.filter(user_id=request.user.id).exists():
             duo_user = duolingo.Duolingo(username, password)
-            words_by_language, translations = {}, {}
-            for lang_abrv in duo_user.get_languages(abbreviations=True):
-                words_by_language[lang_abrv] = duo_user.get_known_words(lang_abrv)
+            words_by_language, translations, languages, lang_abrv = {}, {}, duo_user.get_languages(), {}
+
+            for lang in languages:
+                lang_abrv[lang] = duo_user.get_abbreviation_of(lang)
+            for abrv in lang_abrv.values():
+                words_by_language[abrv] = duo_user.get_known_words(abrv)
             for source in words_by_language:
                 translations[source] = duo_user.get_translations(target='en', source=source,
                                                                  words=words_by_language[source])
@@ -38,8 +41,8 @@ def profile(request):
                                           avatar=str(user_info['avatar']) + '/xxlarge',
                                           known_words=words_by_language,
                                           translations=translations,
-                                          languages=duo_user.get_languages(),
-                                          lang_abrv=duo_user.get_languages(abbreviations=True))
+                                          languages=languages,
+                                          lang_abrv=lang_abrv)
 
     return render(request, "profile.html", {'duo_user': DuoData.objects.filter(user_id=request.user.id).first()})
 
@@ -48,7 +51,7 @@ def profile(request):
 def known_words(request):
     lang_selection = None
     if 'lang_selection_btn' in request.POST:
-        lang_selection = LangAbrv.objects.get(name=request.POST['lang_selection_btn']).abrv
+        lang_selection = DuoData.objects.get(user_id=request.user.id).lang_abrv[request.POST['lang_selection_btn']]
         request.session['lang_selection'] = lang_selection
     elif 'random_study_btn' in request.POST:
         return redirect('flashcard')
@@ -60,7 +63,7 @@ def known_words(request):
 @login_required
 def flashcard(request):
     if not request.session.get('lang_selection'):
-        request.session['lang_selection'] = DuoData.objects.get(user_id=request.user.id).lang_abrv[0]
+        request.session['lang_selection'] = list(DuoData.objects.get(user_id=request.user.id).lang_abrv.values())[0]
     card_side = "front"
     word = None
     if 'front' in request.POST:
