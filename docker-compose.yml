@@ -3,7 +3,7 @@ services:
   duovocab:
     build: .
     container_name: duovocab
-    image: duovocab-image
+    image: starliza/duovocab
     environment:
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_EMAIL=admin@admin.com

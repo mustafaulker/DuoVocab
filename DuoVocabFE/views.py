@@ -1,9 +1,9 @@
-import duolingo
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
+from duolingo import Duolingo, DuolingoException
 
 from .forms import NewUserForm
 from .models import DuoData
@@ -16,10 +16,13 @@ def homepage(request):
 @login_required
 def profile(request):
     if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
+        username, password = request.POST['username'], request.POST['password']
         if not DuoData.objects.filter(user_id=request.user.id).exists():
-            duo_user = duolingo.Duolingo(username, password)
+            try:
+                duo_user = Duolingo(username, password)
+            except DuolingoException:
+                messages.error(request, "Login failed.")
+                return redirect(profile)
             words_by_language, translations, languages, lang_abrv = {}, {}, duo_user.get_languages(), {}
 
             for lang in languages:
