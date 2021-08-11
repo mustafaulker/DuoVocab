@@ -18,7 +18,7 @@ Study feature (Word repetition) will be added.
 #### Admin Panel
 
 Run following command to create an admin account.  
-`docker exec -it duovocab bash -c "python manage.py createsuperuser --noinput; python manage.py migrate"`
+`$ docker exec -it duovocab bash -c "python manage.py createsuperuser --noinput; python manage.py migrate"`
 
 Panel  
 [`localhost:8000/admin`](http://localhost:8000/admin)
