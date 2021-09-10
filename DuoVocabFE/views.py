@@ -35,7 +35,6 @@ def profile(request):
             user_info = duo_user.get_user_info()
             DuoData.objects.get_or_create(user_id=request.user.id,
                                           username=username,
-                                          password=password,
                                           duo_id=user_info['id'],
                                           fullname=user_info['fullname'],
                                           bio=user_info['bio'],
